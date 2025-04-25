@@ -1,0 +1,345 @@
+TAX INVOICE
+
+
+VIRTUAT.COMPANYIND
+
+
+VirtualAddr
+
+
+255.0.0.0, India
+
+
+Ph: Fax:
+
+
+CIN: Al0002AA1710ALB001995
+
+
+PAN : AAABB9SSOA
+
+
+CONSUMER PRODUCT DIVISION
+
+
+GST Reg No
+
+
+17ABCDEF123GXYZ
+
+
+Ref No / Date
+
+
+PO1234567 / 1.7.2017
+
+
+GST Inv No/ Date
+
+
+€31416603306 / 03.01.2018
+
+
+Transporier Name
+
+
+Order No/ Date
+
+
+1234567 / 1.7.2017
+
+
+Vehicle No / LR No
+
+
+Payment Terms
+
+
+Z030 30 Days from Invoice Date
+
+
+Way Bill No
+
+
+Due Date
+
+
+02.02.2018
+
+
+Sales Type
+
+
+E COM Sales.
+
+
+Billing Details
+
+
+114201
+
+
+Shipping Details
+
+
+Name
+
+
+Reciever CompanyInd
+
+
+Name
+
+
+Reciever CompanyInd
+
+
+Address
+
+
+Reciever CompanyInd
+
+
+Address
+
+
+Reciever CompanyInd
+
+
+111000, India
+
+
+111000, India
+
+
+State
+
+
+09-Uttar Pradesh
+
+
+State
+
+
+09-Uttar Pradesh
+
+
+GSTIN/Unique ID
+
+
+O7VAABBC8888G1A71
+
+
+GSTIN/Unique ID
+
+
+O7VAABBC8888G1A71
+
+
+PAN
+
+
+ABBCC9098G
+
+
+Material
+
+
+Description
+
+
+HSN
+
+
+Qty
+
+
+Unit Price
+
+
+Total
+
+
+Discount
+
+
+Taxable Value
+
+
+IGST
+
+
+%
+
+
+Aut
+
+
+512167
+
+
+Dummy product for evaluation
+
+
+75647000
+
+
+12,000
+
+
+8,291.00
+
+
+99,492.00
+
+
+0.00
+
+
+99,492.00
+
+
+18
+
+
+17,908.56
+
+
+512168
+
+
+Dummy product for evaluation
+
+
+75647000
+
+
+3.000
+
+
+9,286.00
+
+
+27,858.00
+
+
+0.00
+
+
+27,858.00
+
+
+18
+
+
+5,014.44
+
+
+513425
+
+
+Dummy product for evaluation
+
+
+75647000
+
+
+3.000
+
+
+3,815.60
+
+
+11,445.00
+
+
+0.00
+
+
+12,445.00
+
+
+18
+
+
+2,060.10
+
+
+Freight
+
+
+Insurance
+
+
+Packing & Forwarding Charges
+
+
+Totals
+
+
+18.000
+
+
+138,795.00
+
+
+0.00
+
+
+138,795.00
+
+
+24,983.10
+
+
+Total Invoice Value ( In Figure )
+
+
+163,778.00
+
+
+INK
+
+
+Total Invoice Value ( In Words }
+
+
+ONE T.AKH SIXTY
+
+
+f
+
+
+THREE THOUSAND SEVEN HUNDRED SEVENTY EIGHT
+
+
+RUPEES
+
+
+No Of packages : 18
+
+
+PO Number :; PO1234567
+
+
+E&O.E.
+
+
+Checked By
+
+
+AUTHORISED SIGNATORY
+
+
+"For
+
+
+Terms and Conditions please read Overl
+
+
+eaf
+
+
+Page 1 of 1
+
+

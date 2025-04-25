@@ -1,0 +1,234 @@
+Node Number,Text,Key Detected
+1,"TAX INVOICE
+",Yes
+2,"VIRTUAT.COMPANYIND
+",No
+3,"VirtualAddr
+",No
+4,,No
+5,"255.0.0.0, India
+",No
+6,"Ph: Fax:
+",No
+7,"CIN: Al0002AA1710ALB001995
+",No
+8,"PAN : AAABB9SSOA
+",No
+9,,No
+10,"CONSUMER PRODUCT DIVISION
+",No
+11,"GST Reg No
+",Yes
+12,"17ABCDEF123GXYZ
+",No
+13,"Ref No / Date
+",Yes
+14,"PO1234567 / 1.7.2017
+",No
+15,"GST Inv No/ Date
+",Yes
+16,"€31416603306 / 03.01.2018
+",No
+17,"Transporier Name
+",Yes
+18,"Order No/ Date
+",Yes
+19,"1234567 / 1.7.2017
+",No
+20,"Vehicle No / LR No
+",Yes
+21,"Payment Terms
+",Yes
+22,"Z030 30 Days from Invoice Date
+",Yes
+23,"Way Bill No
+",Yes
+24,"Due Date
+",Yes
+25,"02.02.2018
+",No
+26,"Sales Type
+",Yes
+27,"E COM Sales.
+",Yes
+28,"Billing Details
+",Yes
+29,"114201
+",No
+30,"Shipping Details
+",Yes
+31,"Name
+",Yes
+32,"Reciever CompanyInd
+",Yes
+33,"Name
+",Yes
+34,"Reciever CompanyInd
+",Yes
+35,"Address
+",Yes
+36,"Reciever CompanyInd
+",Yes
+37,"Address
+",Yes
+38,"Reciever CompanyInd
+",Yes
+39,"111000, India
+",No
+40,"111000, India
+",No
+41,"State
+",Yes
+42,"09-Uttar Pradesh
+",No
+43,"State
+",Yes
+44,"09-Uttar Pradesh
+",No
+45,"GSTIN/Unique ID
+",Yes
+46,"O7VAABBC8888G1A71
+",No
+47,"GSTIN/Unique ID
+",Yes
+48,"O7VAABBC8888G1A71
+",No
+49,"PAN
+",No
+50,"ABBCC9098G
+",No
+51,"Material
+",No
+52,"Description
+",Yes
+53,"HSN
+",Yes
+54,"Qty
+",No
+55,"Unit Price
+",Yes
+56,"Total
+",Yes
+57,"Discount
+",Yes
+58,"Taxable Value
+",Yes
+59,"IGST
+",Yes
+60,"%
+",No
+61,"Aut
+",No
+62,"512167
+",No
+63,"Dummy product for evaluation
+",No
+64,"75647000
+",No
+65,"12,000
+",No
+66,"8,291.00
+",No
+67,"99,492.00
+",No
+68,"0.00
+",No
+69,"99,492.00
+",No
+70,"18
+",No
+71,"17,908.56
+",No
+72,"512168
+",No
+73,"Dummy product for evaluation
+",No
+74,"75647000
+",No
+75,"3.000
+",No
+76,"9,286.00
+",No
+77,"27,858.00
+",No
+78,"0.00
+",No
+79,"27,858.00
+",No
+80,"18
+",No
+81,"5,014.44
+",No
+82,"513425
+",No
+83,"Dummy product for evaluation
+",No
+84,"75647000
+",No
+85,"3.000
+",No
+86,"3,815.60
+",No
+87,"11,445.00
+",No
+88,"0.00
+",No
+89,"12,445.00
+",No
+90,"18
+",No
+91,"2,060.10
+",No
+92,"Freight
+",Yes
+93,"Insurance
+",Yes
+94,"Packing & Forwarding Charges
+",Yes
+95,"Totals
+",Yes
+96,"18.000
+",No
+97,"138,795.00
+",No
+98,"0.00
+",No
+99,"138,795.00
+",No
+100,"24,983.10
+",No
+101,"Total Invoice Value ( In Figure )
+",Yes
+102,"163,778.00
+",No
+103,"INK
+",No
+104,"Total Invoice Value ( In Words }
+",Yes
+105,"ONE T.AKH SIXTY
+",No
+106,"f
+",No
+107,"THREE THOUSAND SEVEN HUNDRED SEVENTY EIGHT
+",Yes
+108,"RUPEES
+",No
+109,"No Of packages : 18
+",No
+110,"PO Number :; PO1234567
+",Yes
+111,"E&O.E.
+",No
+112,"Checked By
+",No
+113,"AUTHORISED SIGNATORY
+",No
+114,"""For
+",No
+115,"Terms and Conditions please read Overl
+",No
+116,"eaf
+",No
+117,,No
+118,"Page 1 of 1
+",No
