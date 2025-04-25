@@ -6,9 +6,8 @@ from pdf2image import convert_from_path
 poppler_path = "/opt/homebrew/bin"  # macOS avec Homebrew
 
 # Chemins des répertoires
-dir_path = "/Users/associationinsatjunior/Desktop/Projects/"
-destination = "/Users/associationinsatjunior/Desktop/Projects/"
-
+dir_path = "assets/"
+destination = "assets/"
 # Lister uniquement les fichiers PDF
 pdfs = [f for f in listdir(dir_path) if isfile(join(dir_path, f)) and f.lower().endswith('.pdf')]
 print(pdfs)
