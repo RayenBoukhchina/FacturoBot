@@ -132,8 +132,8 @@ def process_invoice(input_path, output_path):
 
 if __name__ == "__main__":
     # Configuration des chemins
-    input_path = '/Users/associationinsatjunior/Desktop/Projects/FacturoBot/assets/Facture.png'
-    output_path = '/Users/associationinsatjunior/Desktop/Projects/FacturoBot/assets/rotated_improved.png'
+    input_path = 'Invoice Extractor/assets/Facture.png'
+    output_path = 'Invoice Extractor/assets/rotated_improved.png'
     
     # Exécution
     result = process_invoice(input_path, output_path)

@@ -3,220 +3,219 @@ import numpy as np
 
 
 def detect_line(rect, x, y1, y2):
-	pos_edge = 0
-	neg_edge = 0
-	for y in range(y1, y2):
-		if (int(rect[y][x][0])+int(rect[y][x][1])+int(rect[y][x][2]) - int(rect[y-2][x][0])-int(rect[y-2][x][1])-int(rect[y-2][x][2]))/2 >= 80:
-			pos_edge = 1
-		if (int(rect[y][x][0])+int(rect[y][x][1])+int(rect[y][x][2]) - int(rect[y-2][x][0])-int(rect[y-2][x][1])-int(rect[y-2][x][2])) / 2 <= -80:
-			neg_edge = 1
-		if(pos_edge and neg_edge):
-			print("line detected between ", y1, " ", y2)
-			return True
-	return False
+    """
+    Détecte une ligne verticale dans une zone rectangulaire en analysant les transitions de couleur.
+    
+    Args:
+        rect: Zone d'image à analyser (format BGR)
+        x: Position horizontale à analyser
+        y1, y2: Bornes verticales de la zone d'analyse
+        
+    Returns:
+        True si une ligne est détectée, False sinon
+    """
+    pos_edge = 0  # Détection de transition claire
+    neg_edge = 0  # Détection de transition sombre
+    
+    for y in range(y1, y2):
+        # Calcul de la différence de luminosité entre le pixel courant et 2 pixels au-dessus
+        diff = (int(rect[y][x][0]) + int(rect[y][x][1]) + int(rect[y][x][2]) - 
+               int(rect[y-2][x][0]) - int(rect[y-2][x][1]) - int(rect[y-2][x][2])) / 2
+        
+        if diff >= 80:
+            pos_edge = 1
+        if diff <= -80:
+            neg_edge = 1
+            
+        if pos_edge and neg_edge:
+            print(f"Ligne détectée entre {y1} et {y2}")
+            return True
+            
+    return False
+
 
 def levenshtein_ratio_and_distance(s, t, ratio_calc=True):
-    """ levenshtein_ratio_and_distance:
-        Calculates levenshtein distance between two strings.
-        If ratio_calc = True, the function computes the
-        levenshtein distance ratio of similarity between two strings
-        For all i and j, distance[i,j] will contain the Levenshtein
-        distance between the first i characters of s and the
-        first j characters of t
     """
-    # Initialize matrix of zeros
-    rows = len(s)+1
-    cols = len(t)+1
+    Calcule la distance ou le ratio de Levenshtein entre deux chaînes.
+    
+    Args:
+        s, t: Chaînes à comparer
+        ratio_calc: Si True, retourne un ratio normalisé (défaut: True)
+        
+    Returns:
+        Ratio de similarité (si ratio_calc=True) ou distance brute (sinon)
+    """
+    # Initialisation de la matrice
+    rows = len(s) + 1
+    cols = len(t) + 1
     distance = np.zeros((rows, cols), dtype=int)
 
-    # Populate matrix of zeros with the indeces of each character of both strings
+    # Remplissage des indices
     for i in range(1, rows):
         for k in range(1, cols):
             distance[i][0] = i
             distance[0][k] = k
 
-    # Iterate over the matrix to compute the cost of deletions,insertions and/or substitutions
+    # Calcul des coûts
     for col in range(1, cols):
         for row in range(1, rows):
             if s[row-1] == t[col-1]:
-                # If the characters are the same in the two strings in a given position [i,j] then the cost is 0
-                cost = 0
+                cost = 0  # Même caractère
             else:
-                # In order to align the results with those of the Python Levenshtein package, if we choose to calculate the ratio
-                # the cost of a substitution is 2. If we calculate just distance, then the cost of a substitution is 1.
-                if ratio_calc == True:
-                    cost = 2
-                else:
-                    cost = 1
-            distance[row][col] = min(distance[row-1][col] + 1,      # Cost of deletions
-                                     # Cost of insertions
-                                     distance[row][col-1] + 1,
-                                     distance[row-1][col-1] + cost)     # Cost of substitutions
-    if ratio_calc == True:
-        # Computation of the Levenshtein Distance Ratio
-        Ratio = ((len(s)+len(t)) - distance[row][col]) / (len(s)+len(t))
-        return Ratio
+                cost = 2 if ratio_calc else 1  # Coût de substitution
+                
+            distance[row][col] = min(
+                distance[row-1][col] + 1,      # Suppression
+                distance[row][col-1] + 1,      # Insertion
+                distance[row-1][col-1] + cost  # Substitution
+            )
+
+    if ratio_calc:
+        # Calcul du ratio normalisé
+        return ((len(s) + len(t)) - distance[row][col]) / (len(s) + len(t))
     else:
-        # print(distance)
-        # insertions and/or substitutions
-        # This is the minimum number of edits needed to convert string a to string b
         return distance[row][col]
 
 
-class node:  
-    def __init__(self, i,x1,x2,y1,y2, text_val):  
+class Node:  
+    """
+    Classe représentant un nœud dans le graphe de structure du document.
+    
+    Attributs:
+        i: Identifiant unique
+        x1, x2, y1, y2: Coordonnées de la boîte englobante
+        edges: Liste des nœuds connectés
+        parent: Nœud parent (-1 si aucun)
+        is_key: Booléen indiquant si c'est un champ clé
+        column: Numéro de colonne
+        down, right, left: Nœuds adjacents
+        text_value: Texte contenu dans le nœud
+        match_percent: Pourcentage de correspondance avec les synonymes
+    """
+    def __init__(self, i, x1, x2, y1, y2, text_val):  
         self.i = i
-        #x1,x2,y1,y2 
         self.x1 = x1  
         self.x2 = x2
         self.y1 = y1
         self.y2 = y2
-       	#edges store the nodes this node is connected to
-       	#they are integers denoting node number
-        self.edges = []
-        #parent of current node
+        self.edges = []  # Nœuds connectés
         self.parent = -1
-        #is node a key
         self.is_key = False
-        #stores column number it is a part of
         self.column = -1
-        #stores node present below it
         self.down = -1
-        #stores node present to it's right
         self.right = -1
-        self.left  = -1
-        #used in unused function
-        self.parents = [] #stores all parent in path to current node
+        self.left = -1
+        self.parents = []  # Historique des parents
         self.table_number = -1
         self.table_col = -1
         self.table_row = -1
         self.text_value = text_val
         self.match_percent = 0
 
-#check if two nodes are overlapping
-def overlapping(x1,x2,y1,y2,a1,a2,b1,b2):
-		if(x2<=a1 or x1>=a2): return False
-		elif(y2<=b1 or y1>=b2):return False
-		else : return True
-#check if two nodes are verically above and below (if one node's 80% lies within other node's width)
-#return value 0 : not overlapping
-#return value 1 : overlapping but not 70%
-#return value 2 : overlapping and >=70%
-def x_overlapping(x1,x2,y1,y2,a1,a2,b1,b2):
-		if(x2<=a1 or x1>=a2): return 0
-		if(abs(x1-a1)>200):return 0
-		else:
-			l = max(x1,a1)
-			r = min(x2,a2)
-			if((r-l)/(x2-x1) >= 0.7):return 2
-			if((r-l)/(a2-a1) >= 0.7):return 2
-			return 1
-			
 
-#unused function		
-def make_edges(img,key,pos,contours,graph,node_map,key_fields,Nodes):
-	print("making edges")
-	parent = contours[key][pos]
-	i=pos+1
-	#creating edges between parent and nodes to the right
-	while not(i>=len(contours[key]) or ( contours[key][i] in key_fields) ):
-		graph[parent][contours[key][i]] = True
-		graph[contours[key][i]][parent] = True 
-		Nodes[parent].edges.append(contours[key][i])
-		Nodes[contours[key][i]].parents.append(parent)
-		x1= node_map[parent][0]
-		x2= node_map[contours[key][i]][0]
-		y1= node_map[parent][1]
-		y2= node_map[contours[key][i]][1]
-		cv2.line(img,(x1,y1),(x2,y2),(204,100,0),2)
-		i+=1
-	#make edges between parent and nodes down below
-	return img
+def overlapping(x1, x2, y1, y2, a1, a2, b1, b2):
+    """
+    Vérifie si deux rectangles se chevauchent.
+    
+    Returns:
+        True si chevauchement, False sinon
+    """
+    if x2 <= a1 or x1 >= a2: 
+        return False
+    elif y2 <= b1 or y1 >= b2:
+        return False
+    else: 
+        return True
 
-#unused function
-def make_columns(img,contours,node_map,graph,key_fields,Nodes,node_to_key):
-	for field in key_fields:
-		x1 = Nodes[field].x1
-		x2 = Nodes[field].x2
-		Nodes[field].is_key = True
-		for row in contours:
-			if  row <= node_to_key[field]: continue
-			for row_node in contours[row]: 
-				a = node_map[row_node][0]
-				b = node_map[row_node][0] + a
-				if ( not( b<=x1 or a>=x2 ) ):
-				#if abs(x1-a)<200 and Nodes[field].column == Nodes[row_node].column:
-					#find node in Nodes corresponding to current element row
-					graph[field][row_node] = True
-					graph[row_node][field] = True 
-					Nodes[field].edges.append(row_node)
-					Nodes[row_node].parents.append(field)
-					a1= node_map[field][0]
-					a2= node_map[row_node][0]
-					b1= node_map[field][1]
-					b2= node_map[row_node][1]
-					cv2.line(img,(a1,b1),(a2,b2),(167,88,162),2)
 
-#look at this function carefully
-def dfs(img,row,column,contours,Nodes,go_down,go_right,parent,root):
-	#contours is a dict with key as row numbers (0,1,2,...,total rows-1)
-	#eg. { 0:[0,1,2], 1:[3,4,5,6], 2:[7,8,9]} when image has 3 rows and 10 nodes
-	#row is the key/row number
-	#column is index of current node in list contours[row]
-	#Nodes is a list of all node objects
-	#go_down specifies whether to look for node below
-	#go_right species whther to look for node to the right
-	#parent is immediate parent node of current node (parent would be at the left or at top of current node)
-	#root is the first node of the path of current node(should be a keyfield node)
-	if(row>= len(contours) or column>= len(contours[row])):return
-	current_node = contours[row][column]
-	x1=Nodes[current_node].x1
-	x2=Nodes[current_node].x2
-	y1=Nodes[current_node].y1
-	y2=Nodes[current_node].y2
-	
-	#look right if node is not last in row and next node is not a key
-	if(go_right and column<len(contours[row])-1 and (not Nodes[contours[row][column+1]].is_key)):
-		next_node = contours[row][column+1]
-		a1=Nodes[next_node].x1
-		b1=Nodes[next_node].y1
-		cv2.line(img,(x1,y1),(a1,b1),(167,88,162),2)
-		Nodes[current_node].right = next_node
-		Nodes[next_node].left = current_node
-		dfs(img,row,column+1,contours, Nodes, False, True,current_node,root)
-	
-	#look down if current row is not last row
-	if(go_down and row<len(contours)-1 ):
-		flag=0 
-		#search for a node maximum 4 rows below
-		#if any node is found recur dfs with that node and then break
-		#if current node is not key but next node is key, break
-		for next_row in range(row+1,min(row+5,len(contours))):
-			if flag: break
-			for i in range(0,len(contours[next_row])):
-				if flag: break #means we've already met one node below
-				a1=Nodes[contours[next_row][i]].x1
-				a2=Nodes[contours[next_row][i]].x2
-				b1=Nodes[contours[next_row][i]].y1
-				b2=Nodes[contours[next_row][i]].y2
+def x_overlapping(x1, x2, y1, y2, a1, a2, b1, b2):
+    """
+    Vérifie le chevauchement horizontal entre deux rectangles.
+    
+    Returns:
+        0: Pas de chevauchement
+        1: Chevauchement partiel (<70%)
+        2: Chevauchement significatif (>=70%)
+    """
+    if x2 <= a1 or x1 >= a2: 
+        return 0
+    if abs(x1 - a1) > 200:
+        return 0
+        
+    l = max(x1, a1)
+    r = min(x2, a2)
+    overlap_ratio1 = (r - l) / (x2 - x1)
+    overlap_ratio2 = (r - l) / (a2 - a1)
+    
+    if overlap_ratio1 >= 0.7 or overlap_ratio2 >= 0.7:
+        return 2
+    return 1
 
-				overlap = x_overlapping(x1,x2,y1,y2,a1,a2,b1,b2)
-				
-				if overlap == 1: 
-					flag=1
-					break 
-				elif overlap ==2 :
-					if not Nodes[contours[next_row][i]].is_key:
-						Nodes[current_node].down = contours[next_row][i]
-						Nodes[contours[next_row][i]].parent = current_node
-						Nodes[contours[next_row][i]].root = root
-						# print("printing line")
-						cv2.line(img,(x1,y1),(a1,b1),(167,88,162),2)
-						dfs(img,next_row,i,contours, Nodes, True ,False,current_node,root)
-						flag=1
-					else: 
-						flag=1
-						break
+
+def dfs(img, row, column, contours, Nodes, go_down, go_right, parent, root):
+    """
+    Parcours en profondeur pour construire les relations entre les nœuds.
+    
+    Args:
+        img: Image pour visualisation
+        row, column: Position courante dans les contours
+        contours: Structure organisée des contours
+        Nodes: Liste des nœuds
+        go_down, go_right: Directions de recherche
+        parent, root: Nœuds parents
+    """
+    if row >= len(contours) or column >= len(contours[row]):
+        return
+        
+    current_node = contours[row][column]
+    x1 = Nodes[current_node].x1
+    x2 = Nodes[current_node].x2
+    y1 = Nodes[current_node].y1
+    y2 = Nodes[current_node].y2
+    
+    # Recherche vers la droite
+    if go_right and column < len(contours[row])-1 and not Nodes[contours[row][column+1]].is_key:
+        next_node = contours[row][column+1]
+        a1 = Nodes[next_node].x1
+        b1 = Nodes[next_node].y1
+        cv2.line(img, (x1, y1), (a1, b1), (167, 88, 162), 2)
+        Nodes[current_node].right = next_node
+        Nodes[next_node].left = current_node
+        dfs(img, row, column+1, contours, Nodes, False, True, current_node, root)
+    
+    # Recherche vers le bas
+    if go_down and row < len(contours)-1:
+        flag = False
+        for next_row in range(row+1, min(row+5, len(contours))):
+            if flag: 
+                break
+                
+            for i in range(len(contours[next_row])):
+                if flag: 
+                    break
+                    
+                a1 = Nodes[contours[next_row][i]].x1
+                a2 = Nodes[contours[next_row][i]].x2
+                b1 = Nodes[contours[next_row][i]].y1
+                b2 = Nodes[contours[next_row][i]].y2
+
+                overlap = x_overlapping(x1, x2, y1, y2, a1, a2, b1, b2)
+                
+                if overlap == 1: 
+                    flag = True
+                    break 
+                elif overlap == 2:
+                    if not Nodes[contours[next_row][i]].is_key:
+                        Nodes[current_node].down = contours[next_row][i]
+                        Nodes[contours[next_row][i]].parent = current_node
+                        Nodes[contours[next_row][i]].root = root
+                        cv2.line(img, (x1, y1), (a1, b1), (167, 88, 162), 2)
+                        dfs(img, next_row, i, contours, Nodes, True, False, current_node, root)
+                        flag = True
+                    else: 
+                        flag = True
+                        break
+
 
 def assign_columns(img,columns, Nodes):
 	node_columns = {}
@@ -527,61 +526,46 @@ def extract(labels, key_match, Nodes):
 	return data
 
 import matplotlib.pyplot as plt
-
 def main():
-    image_path = 'assets/Facture.png'  
+    """
+    Fonction principale pour le traitement d'image de facture.
+    """
+    image_path = 'Invoice Extractor/assets/Facture.png'  
     image = cv2.imread(image_path)
 
     if image is None:
-        print("Erreur lors du chargement de l'image.")
+        print("Erreur: Impossible de charger l'image.")
         return
 
-    print("Image chargée avec succès.")
+    print("Traitement de l'image...")
 
     # Conversion en niveaux de gris
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    # Application du flou pour réduire le bruit
+    # Réduction du bruit
     blurred_image = cv2.GaussianBlur(gray_image, (5, 5), 0)
 
-    # Détection des bords avec Canny
+    # Détection des contours
     edges = cv2.Canny(blurred_image, 50, 150)
 
-    # Affichage de l'image de bords
-    plt.imshow(edges, cmap='gray')
-    plt.title("Bords détectés")
-    plt.show()
+    # Détection des lignes
+    lines = cv2.HoughLinesP(edges, 1, np.pi/180, threshold=50, minLineLength=50, maxLineGap=10)
 
-    # Détection des lignes avec Hough Transform
-    lignes = cv2.HoughLinesP(edges, 1, np.pi / 180, threshold=50, minLineLength=50, maxLineGap=10)
-
-    if lignes is not None:
-        print(f"{len(lignes)} lignes détectées.")
-        for ligne in lignes:
-            x1, y1, x2, y2 = ligne[0]
+    if lines is not None:
+        print(f"{len(lines)} lignes détectées.")
+        for line in lines:
+            x1, y1, x2, y2 = line[0]
             cv2.line(image, (x1, y1), (x2, y2), (0, 255, 0), 2)
-    else:
-        print("Aucune ligne détectée.")
-
-    # Affichage de l'image avec les lignes détectées
-    plt.imshow(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
-    plt.title("Lignes détectées")
-    plt.show()
 
     # Détection des contours
     contours, _ = cv2.findContours(edges, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     if contours:
-        print(f"{len(contours)} contours détectés.")
-        contour_image = image.copy()
-        cv2.drawContours(contour_image, contours, -1, (0, 0, 255), 2)
-        plt.imshow(cv2.cvtColor(contour_image, cv2.COLOR_BGR2RGB))
-        plt.title("Contours détectés")
-        plt.show()
-    else:
-        print("Aucun contour détecté.")
+        print(f"{len(contours)} zones de texte détectées.")
+        cv2.drawContours(image, contours, -1, (0, 0, 255), 2)
 
-    print("Exécution terminée.")
+    print("Traitement terminé avec succès.")
+
 
 if __name__ == "__main__":
     main()

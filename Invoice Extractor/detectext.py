@@ -9,12 +9,12 @@ from graph import make_graph
 
 # Chargement des fichiers labels et synonymes
 labels = {}
-with open('assets/labels.csv', mode='r') as infile:
+with open('Invoice Extractor/assets/labels.csv', mode='r') as infile:
     reader = csv.reader(infile)
     labels = {rows[1]: rows[0] for rows in reader}
 
 synonyms = {}
-with open('assets/label_synonyms.csv', mode='r') as infile:
+with open('Invoice Extractor/assets/label_synonyms.csv', mode='r') as infile:
     reader = csv.reader(infile)
     synonyms = {rows[0]: rows[1:] for rows in reader}
 
@@ -99,8 +99,8 @@ def get_text(image_path, output_dir, write_=False):
     make_graph(rect, merge_cnt, key_nodes, column_contours, text_val, synonyms, labels)
 
 def main():
-    image_path = 'assets/Facture.png'
-    output_dir = 'output/'
+    image_path = 'Invoice Extractor/assets/Facture.png'
+    output_dir = 'Invoice Extractor/output'
     if os.path.isfile(image_path):
         get_text(image_path, output_dir, write_=False)
 
