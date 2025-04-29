@@ -1,0 +1,29 @@
+Seller Address,0,French_Label
+Seller GSTIN Number,1,Numéro GSTIN du Vendeur
+Country of Origin,2,Pays d'Origine
+Currency,3,Devise
+Description,4,Description
+Total Invoice amount entered by WH operator,5,Montant Total de la Facture (Saisi par l'Opérateur)
+Total Invoice Quantity entered by WH operator,6,Quantité Totale (Saisie par l'Opérateur)
+Total TCS Collected,7,Total TCS Collecté
+Round Off Charges,8,Frais d'Arrondi
+PO Number,9,Numéro de Commande
+Invoice Items Total Amount,10,Montant Total des Articles
+Invoice Items total quantity,11,Quantité Totale des Articles
+Buyer GSTIN Number,12,Numéro GSTIN de l'Acheteur
+Ship to Address,13,Adresse de Livraison
+S.No,14,N°
+Product ID,15,ID Produit
+HSN,16,HSN
+Title,17,Titre
+Quantity,18,Quantité
+Unit Price,19,Prix Unitaire
+Excise Duty,20,Droit d'Accise
+Discount Percent,21,Pourcentage de Remise
+SGST Percent,22,Pourcentage SGST
+CGST Percent,23,Pourcentage CGST
+IGST Percent,24,Pourcentage IGST
+Cess Percent,25,Pourcentage de Cess
+TCS Percent,26,Pourcentage TCS
+Total Amount,27,Montant Total
+APP %,28,Pourcentage APP
