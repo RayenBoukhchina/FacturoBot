@@ -1,0 +1,3 @@
+Numéro,Date,Client,Matricule,Adresse,Total HT,TVA,Timbre,Total TTC,Fichier PDF
+FAC-2025-0001,2025-04-29,Client Test,MF12345678,"123 Rue Exemple, Tunis",3105.000,589.950,1.000,3695.950,Invoice Generator/factures/FAC-2025-0001.pdf
+FAC-2025-0002,2025-04-29,Client Test,MF12345678,"123 Rue Exemple, Tunis",3105.000,589.950,1.000,3695.950,Invoice Generator/factures/FAC-2025-0002.pdf

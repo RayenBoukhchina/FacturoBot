@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Facture {{ facture_numero }}</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 0; 
+            padding: 15px; 
+            color: #333;
+            font-size: 12px;
+        }
+        .header { 
+            text-align: center; 
+            margin-bottom: 15px; 
+            border-bottom: 2px solid #4CAF50; 
+            padding-bottom: 5px; 
+        }
+        .header h1 { 
+            color: #4CAF50; 
+            margin-bottom: 5px;
+            font-size: 18px;
+        }
+        
+        /* Nouveau système Grid pour les coordonnées */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .info-box {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 10px;
+            word-break: break-word;
+        }
+        .info-box h3 {
+            margin-top: 0;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+        .info-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            margin-bottom: 5px;
+        }
+        .info-label {
+            font-weight: bold;
+        }
+        
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 10px 0;
+            font-size: 11px;
+        }
+        th { 
+            background-color: #4CAF50; 
+            color: white; 
+            text-align: left; 
+            padding: 8px; 
+        }
+        td { 
+            padding: 6px; 
+            border-bottom: 1px solid #ddd; 
+        }
+        .totals { 
+            margin-top: 15px; 
+            text-align: right;
+            font-size: 12px;
+        }
+        .total-ttc { 
+            font-size: 14px; 
+            font-weight: bold; 
+            color: #4CAF50; 
+        }
+        .signature { 
+            margin-top: 40px; 
+            text-align: right;
+        }
+        .signature-space {
+            height: 80px;
+            margin-top: 10px;
+            border-bottom: 1px dashed #000;
+            position: relative;
+        }
+        .signature-space::after {
+            content: "Cachet";
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 10px;
+            color: #777;
+        }
+        .footer { 
+            margin-top: 20px; 
+            text-align: center; 
+            font-size: 10px; 
+            color: #777; 
+            border-top: 1px solid #eee; 
+            padding-top: 5px; 
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>FACTURE N° {{ facture_numero }}</h1>
+        <p>Date : {{ date_emission }}</p>
+    </div>
+
+    <!-- Nouvelle version Grid Layout -->
+    <div class="info-grid">
+        <div class="info-box">
+            <h3>FOURNISSEUR</h3>
+            <div class="info-item">
+                <span class="info-label">Nom :</span>
+                <span>{{ fournisseur_nom }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Adresse :</span>
+                <span>{{ fournisseur_adresse }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Matricule :</span>
+                <span>{{ fournisseur_matricule }}</span>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <h3>CLIENT</h3>
+            <div class="info-item">
+                <span class="info-label">Nom :</span>
+                <span>{{ client_nom }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Adresse :</span>
+                <span>{{ client_adresse }}</span>
+            </div>
+            <div class="info-item">
+                <span class="info-label">Matricule :</span>
+                <span>{{ client_matricule }}</span>
+            </div>
+        </div>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Produit/Désignation</th>
+                <th>Prix Unitaire HT</th>
+                <th>Quantité</th>
+                <th>Total HT</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produit in produits %}
+            <tr>
+                <td>{{ produit.nom }}</td>
+                <td>{{ produit.prix_ht }} DT</td>
+                <td>{{ produit.quantite }}</td>
+                <td>{{ produit.prix_ht * produit.quantite }} DT</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="totals">
+        <p>Total HT : {{ total_ht }} DT</p>
+        <p>TVA (19%) : {{ tva }} DT</p>
+        <p>Timbre Fiscale : 1 DT</p>
+        <p class="total-ttc">Total TTC : {{ total_ttc }} DT</p>
+    </div>
+
+    <div class="signature">
+        <p>Signature</p>
+        <div class="signature-space"></div>
+    </div>
+
+    <div class="footer">
+        <p>Merci pour votre confiance | {{ fournisseur_nom }} | Tél: XX XXX XXX</p>
+    </div>
+</body>
+</html>
