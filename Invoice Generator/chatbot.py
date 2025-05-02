@@ -11,9 +11,7 @@ class InvoiceChatbot:
 
     def __init__(self):
         # Clé API Gemini
-        #genai.configure(api_key="AIzaSyCI7gBkV-R-f81bAPAhsBvi0A6HMwY52uM")
-
-        api_key = "AIzaSyCI7gBkV-R-f81bAPAhsBvi0A6HMwY52uM"
+        api_key = "CLE_API_GEMINI"
         genai.configure(api_key=api_key)
     
         # Vérification de la clé API
