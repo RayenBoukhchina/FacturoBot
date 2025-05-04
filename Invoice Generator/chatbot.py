@@ -11,7 +11,7 @@ class InvoiceChatbot:
 
     def __init__(self):
         # Clé API Gemini
-        api_key = "CLE_API_GEMINI"
+        api_key = "YOUR_API_KEY_HERE"  # Remplacez par votre clé API
         genai.configure(api_key=api_key)
     
         # Vérification de la clé API
@@ -147,7 +147,7 @@ class InvoiceChatbot:
                 produits_str
             ])"""
 
-    def get_invoice_data(self, user_input):
+    def get_invoice_data(self, user_input, web_mode=False):
         """Utilise Gemini pour extraire les données de facturation"""
         try:
             model = genai.GenerativeModel(model_name='models/gemini-1.5-pro-latest')
@@ -172,15 +172,22 @@ class InvoiceChatbot:
             
             # Vérification des produits
             if not data.get('produits') or len(data['produits']) == 0:
-                raise ValueError("Au moins un produit est requis")
+                if web_mode:
+                    return None, "Au moins un produit est requis"
+                else:
+                    raise ValueError("Au moins un produit est requis")
             
             for i, p in enumerate(data['produits']):
                 for field, name in [('nom', 'nom'), ('prix_ht', 'prix HT'), ('quantite', 'quantité')]:
                     if field not in p:
                         missing_fields.append((f"produits[{i}].{field}", f"{name} du produit {i+1}"))
             
-            # Demander les champs manquants
-            if missing_fields:
+            # Si en mode web, retourner les champs manquants
+            if web_mode and missing_fields:
+                return data, missing_fields
+                
+            # Demander les champs manquants via terminal (mode non-web)
+            if missing_fields and not web_mode:
                 print("\n⚠️ Certaines informations sont manquantes. Veuillez les compléter :")
                 for field, description in missing_fields:
                     while True:
@@ -215,14 +222,22 @@ class InvoiceChatbot:
                         else:
                             print("❌ Ce champ est obligatoire. Veuillez fournir une valeur.")
             
-            return data
+            return data, None if web_mode else data
 
         except json.JSONDecodeError:
-            print("❌ Erreur: JSON invalide dans la réponse Gemini")
-            return None
+            error_msg = "JSON invalide dans la réponse Gemini"
+            if web_mode:
+                return None, error_msg
+            else:
+                print(f"❌ Erreur: {error_msg}")
+                return None
         except Exception as e:
-            print(f"❌ Erreur d'analyse: {str(e)}")
-            return None
+            error_msg = str(e)
+            if web_mode:
+                return None, error_msg
+            else:
+                print(f"❌ Erreur d'analyse: {error_msg}")
+                return None
 
     """def generate_invoice(self, data):
         ref = f"FAC-{datetime.now().strftime('%Y%m%d-%H%M%S')}"

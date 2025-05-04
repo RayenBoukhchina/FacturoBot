@@ -1,0 +1,78 @@
+/history.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historique des factures - FacturoBot</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container">
+            <a class="navbar-brand" href="/">FacturoBot</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/history">Historique</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2 class="mb-4">Historique des factures</h2>
+        
+        {% if invoices %}
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-success">
+                        <tr>
+                            <th>Référence</th>
+                            <th>Date</th>
+                            <th>Client</th>
+                            <th>Total TTC</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for invoice in invoices %}
+                        <tr>
+                            <td>{{ invoice['Référence'] }}</td>
+                            <td>{{ invoice['Date'] }}</td>
+                            <td>{{ invoice['Client'] }}</td>
+                            <td>{{ invoice['Total TTC'] }} DT</td>
+                            <td>
+                                <a href="{{ url_for('download_file', filename=invoice['Fichier PDF']) }}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-download"></i> Télécharger
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info">
+                <p>Aucune facture n'a été générée pour le moment.</p>
+                <a href="/" class="btn btn-success">Créer une facture</a>
+            </div>
+        {% endif %}
+    </div>
+    
+    <footer class="bg-light text-center p-3 mt-5">
+        <p>FacturoBot - Association INSAT Junior © 2025</p>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

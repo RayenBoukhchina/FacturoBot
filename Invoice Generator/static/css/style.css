@@ -1,0 +1,83 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom: 25px;
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+#preview-content {
+    padding: 10px;
+}
+
+.client-details {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.product-table {
+    margin-top: 20px;
+}
+
+.totals {
+    margin-top: 20px;
+    text-align: right;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}
+
+.total-ttc {
+    font-size: 18px;
+    font-weight: bold;
+    color: #198754;
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+footer {
+    margin-top: 50px;
+}
+
+/* Styles pour le bouton microphone */
+#voice-input-btn {
+    height: auto;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: 0 15px;
+}
+
+#voice-input-btn i {
+    font-size: 1.5rem;
+}
+
+/* Animation pour le bouton microphone actif */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+#voice-input-btn.btn-danger {
+    animation: pulse 1.5s infinite;
+}
