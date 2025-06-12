@@ -11,7 +11,7 @@ class InvoiceChatbot:
 
     def __init__(self):
         # Clé API Gemini
-        api_key = "YOUR_API_KEY_HERE"  # Remplacez par votre clé API
+        api_key = "AIzaSyACPXY1Wkq6Iqt_-LwlXml5I6AfyKaiahs"  # Remplacez par votre clé API
         genai.configure(api_key=api_key)
     
         # Vérification de la clé API
@@ -150,7 +150,7 @@ class InvoiceChatbot:
     def get_invoice_data(self, user_input, web_mode=False):
         """Utilise Gemini pour extraire les données de facturation"""
         try:
-            model = genai.GenerativeModel(model_name='models/gemini-1.5-pro-latest')
+            model = genai.GenerativeModel(model_name='models/gemini-1.5-flash-latest')            
             prompt = f"{self.system_prompt}\n\nDemande: {user_input}"
             response = model.generate_content(prompt)
 
@@ -285,9 +285,9 @@ class InvoiceChatbot:
             client_nom=client_nom,
             client_adresse=client_adresse,
             client_matricule=client_matricule,
-            fournisseur_nom="Association INSAT Junior",  # Ajouté
-            fournisseur_adresse="RDC , CHEZ L'INSAT , CENTRE URB NORD , 1082",  # Ajouté
-            fournisseur_matricule="1730424/R",  # Ajouté
+            fournisseur_nom="Association INSAT Junior",  
+            fournisseur_adresse="RDC , CHEZ L'INSAT , CENTRE URB NORD , 1082",  
+            fournisseur_matricule="1730424/R",  
             produits=produits,
             total_ht=f"{total_ht:.3f}",
             tva=f"{tva:.3f}",

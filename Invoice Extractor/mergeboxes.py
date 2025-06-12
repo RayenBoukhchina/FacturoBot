@@ -5,12 +5,10 @@ import cv2
 # Fonction utilitaire pour assigner chaque mot à une ligne
 def make_rows(contours, thresh_y=0.6):
     """
-    Regroupe les contours en lignes de texte en fonction de leur position verticale.
-    
+    Regroupe les contours en lignes de texte en fonction de leur position verticale.   
     Args:
         contours: Liste des contours à organiser
-        thresh_y: Seuil de tolérance pour l'écart vertical (défaut: 0.6)
-        
+        thresh_y: Seuil de tolérance pour l'écart vertical (défaut: 0.6)      
     Returns:
         Dictionnaire des contours organisés par ligne (clé = position y de la ligne)
     """
@@ -64,13 +62,11 @@ def make_rows(contours, thresh_y=0.6):
 
 def detect_line(rect, x1, x2, y1, y2, w1, w2, h1, h2):
     """
-    Détecte une ligne entre deux boîtes de texte en analysant les transitions de couleur.
-    
+    Détecte une ligne entre deux boîtes de texte en analysant les transitions de couleur.   
     Args:
         rect: Zone d'image à analyser
         x1, y1, w1, h1: Coordonnées de la première boîte
-        x2, y2, w2, h2: Coordonnées de la seconde boîte
-        
+        x2, y2, w2, h2: Coordonnées de la seconde boîte        
     Returns:
         True si une ligne est détectée, False sinon
     """
@@ -90,21 +86,18 @@ def detect_line(rect, x1, x2, y1, y2, w1, w2, h1, h2):
             neg_edge = 1   # Transition sombre
             
         if pos_edge and neg_edge: 
-            print("Ligne détectée entre ", x1+w1, " ", x2)
             return True
             
     return False
 
-def merge_boxes(rect, contoursBBS, thresh_x=0.3, thresh_y=0.3):
+def merge_boxes(rect, contoursBBS, thresh_x=0.3, thresh_y=0.3, debug_image=None):
     """
-    Fusionne les boîtes de texte proches horizontalement et verticalement.
-    
+    Fusionne les boîtes de texte proches horizontalement et verticalement. 
     Args:
         rect: Image originale (pour détection des lignes)
         contoursBBS: Contours organisés par ligne
         thresh_x: Seuil de fusion horizontal (défaut: 0.3)
-        thresh_y: Seuil de fusion vertical (défaut: 0.3)
-        
+        thresh_y: Seuil de fusion vertical (défaut: 0.3)     
     Returns:
         Dictionnaire des boîtes fusionnées par ligne
     """
@@ -134,7 +127,7 @@ def merge_boxes(rect, contoursBBS, thresh_x=0.3, thresh_y=0.3):
                 abs(x1+new_width-x2) < h1*thresh_x and 
                 abs(new_height-h2) < h2*thresh_y and 
                 not (detect_line(rect, x1, x2, miny, y2, new_width, -1, new_height, h2) and 
-                detect_line(rect, x1, x2, miny, y2, new_width, -1, int(new_height/2), int(h2/2))):
+                detect_line(rect, x1, x2, miny, y2, new_width, -1, int(new_height/2), int(h2/2)))):
                 
                 miny = min(miny, y2)
                 new_width = x2 - x1 + w2
@@ -158,6 +151,25 @@ def merge_boxes(rect, contoursBBS, thresh_x=0.3, thresh_y=0.3):
         # Cas où la ligne ne contient qu'un seul contour
         if len(contoursBBS[key]) == 1:
             merge_cnt[key].append(contoursBBS[key][0])
-            
+
+    # À la fin de la fonction, après le code de fusion
+    if debug_image is not None:
+        debug_img = debug_image.copy()
+        
+        # Dessiner les contours non fusionnés (en rouge)
+        for key in contoursBBS:
+            for cnt in contoursBBS[key]:
+                x, y, w, h = cnt
+                cv2.rectangle(debug_img, (x, y), (x+w, y+h), (0, 0, 255), 1)
+        
+        # Dessiner les contours fusionnés (en vert)
+        for key in merge_cnt:
+            for cnt in merge_cnt[key]:
+                x, y, w, h = cnt
+                cv2.rectangle(debug_img, (x, y), (x+w, y+h), (0, 255, 0), 2)
+        
+        cv2.imwrite('Invoice Extractor/output/contours_fusionnes_debug.jpg', debug_img)
+        print("Image de débogage enregistrée: Invoice Extractor/output/contours_fusionnes_debug.jpg")
+    
     return merge_cnt
     

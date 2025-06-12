@@ -1,4 +1,3 @@
-/Invoice Generator/templates/index.html -->
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -10,38 +9,47 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container">
-            <a class="navbar-brand" href="/">FacturoBot</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="/">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/history">Historique</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-    <div class="container mt-5">
+    <div class="container-fluid bg-light min-vh-100">
         <div class="row">
-            <div class="col-md-8 offset-md-2">
-                <div class="card shadow">
-                    <div class="card-header bg-success text-white">
-                        <h3 class="mb-0">Générateur de factures IA</h3>
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 bg-white shadow-sm sidebar">
+                <div class="d-flex flex-column p-3" style="height: 100vh;">
+                    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-decoration-none">
+                        <span class="fs-4 text-success fw-bold">FacturoBot</span>
+                    </a>
+                    <hr>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="/" class="nav-link active">
+                                <i class="bi bi-house-door me-2"></i> Accueil
+                            </a>
+                        </li>
+                        <li>
+                            <a href="/history" class="nav-link link-dark">
+                                <i class="bi bi-clock-history me-2"></i> Historique
+                            </a>
+                        </li>
+                    </ul>
+                    <hr>
+                    <div class="text-center text-muted small">
+                        INSAT Junior © 2025
                     </div>
-                    <div class="card-body">
+                </div>
+            </div>
+
+            <!-- Main content -->
+            <div class="col-md-9 col-lg-10 ms-sm-auto px-4 py-4">
+                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Générateur de factures IA</h1>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-body p-4">
                         <form id="invoice-form">
-                            <div class="mb-3">
-                                <label for="description" class="form-label">Décrivez votre facture naturellement:</label>
+                            <div class="mb-4">
+                                <label for="description" class="form-label fw-bold">Décrivez votre facture naturellement :</label>
                                 <div class="input-group">
-                                    <textarea class="form-control" id="description" rows="4" 
+                                    <textarea class="form-control" id="description" rows="5" 
                                         placeholder="Exemple: Facture pour client XYZ, adresse centre ville, matricule 12345/A, 2 ordinateurs à 1000 DT, 1 souris à 50 DT" required></textarea>
                                     <button type="button" class="btn btn-outline-success" id="voice-input-btn">
                                         <i class="bi bi-mic-fill"></i>
@@ -49,7 +57,7 @@
                                 </div>
                                 <small class="form-text text-muted mt-2">Cliquez sur le microphone pour utiliser la dictée vocale.</small>
                             </div>
-                            <button type="submit" class="btn btn-success" id="generate-btn">
+                            <button type="submit" class="btn btn-success px-4 py-2" id="generate-btn">
                                 <span class="spinner-border spinner-border-sm d-none" id="spinner"></span>
                                 Analyser
                             </button>
@@ -57,37 +65,32 @@
                     </div>
                 </div>
                 
-                <!-- Aperçu de la facture (initialement caché) -->
-                <div id="invoice-preview" class="card mt-4 d-none">
-                    <div class="card-header bg-light">
-                        <h4>Aperçu de la facture</h4>
+                <!-- Aperçu de la facture -->
+                <div id="invoice-preview" class="card border-0 shadow-sm mb-4 d-none">
+                    <div class="card-header bg-white border-0 py-3">
+                        <h4 class="mb-0">Aperçu de la facture</h4>
                     </div>
-                    <div class="card-body">
-                        <div id="preview-content">
-                            <!-- Contenu généré dynamiquement -->
-                        </div>
-                        
-                        <div class="text-center mt-3">
-                            <button id="confirm-invoice" class="btn btn-primary">Générer la facture PDF</button>
-                        </div>
+                    <div class="card-body p-4">
+                        <div id="preview-content"></div>
                     </div>
                 </div>
                 
-                <!-- Message de confirmation (initialement caché) -->
-                <div id="success-message" class="alert alert-success mt-3 d-none">
-                    <p>Facture générée avec succès!</p>
-                    <a id="download-link" href="#" class="btn btn-sm btn-primary">Télécharger la facture</a>
+                <!-- Messages -->
+                <div id="success-message" class="alert alert-success d-flex align-items-center d-none">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    <div>
+                        Facture générée avec succès!
+                        <a id="download-link" href="#" class="btn btn-sm btn-primary ms-2">Télécharger</a>
+                    </div>
                 </div>
                 
-                <!-- Message d'erreur (initialement caché) -->
-                <div id="error-message" class="alert alert-danger mt-3 d-none"></div>
+                <div id="error-message" class="alert alert-danger d-flex align-items-center d-none">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    <div id="error-text"></div>
+                </div>
             </div>
         </div>
     </div>
-    
-    <footer class="bg-light text-center p-3 mt-5">
-        <p>FacturoBot - Association INSAT Junior © 2025</p>
-    </footer>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

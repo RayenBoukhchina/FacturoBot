@@ -4,13 +4,11 @@ import numpy as np
 
 def detect_line(rect, x, y1, y2):
     """
-    Détecte une ligne verticale dans une zone rectangulaire en analysant les transitions de couleur.
-    
+    Détecte une ligne verticale dans une zone rectangulaire en analysant les transitions de couleur.  
     Args:
         rect: Zone d'image à analyser (format BGR)
         x: Position horizontale à analyser
-        y1, y2: Bornes verticales de la zone d'analyse
-        
+        y1, y2: Bornes verticales de la zone d'analyse    
     Returns:
         True si une ligne est détectée, False sinon
     """
@@ -36,12 +34,10 @@ def detect_line(rect, x, y1, y2):
 
 def levenshtein_ratio_and_distance(s, t, ratio_calc=True):
     """
-    Calcule la distance ou le ratio de Levenshtein entre deux chaînes.
-    
+    Calcule la distance ou le ratio de Levenshtein entre deux chaînes.   
     Args:
         s, t: Chaînes à comparer
-        ratio_calc: Si True, retourne un ratio normalisé (défaut: True)
-        
+        ratio_calc: Si True, retourne un ratio normalisé (défaut: True)       
     Returns:
         Ratio de similarité (si ratio_calc=True) ou distance brute (sinon)
     """
@@ -79,8 +75,7 @@ def levenshtein_ratio_and_distance(s, t, ratio_calc=True):
 
 class Node:  
     """
-    Classe représentant un nœud dans le graphe de structure du document.
-    
+    Classe représentant un nœud dans le graphe de structure du document.    
     Attributs:
         i: Identifiant unique
         x1, x2, y1, y2: Coordonnées de la boîte englobante
@@ -437,7 +432,7 @@ def make_graph(img,contours,key_fields,column_contours, text_val, synonyms, labe
 
 
 	# print(ppp)
-	cv2.imwrite("graph.jpg",img )
+	cv2.imwrite("Invoice Extractor/output/graph.jpg",img )
 
 
 def find_label(synonyms, detected_fields, Nodes):

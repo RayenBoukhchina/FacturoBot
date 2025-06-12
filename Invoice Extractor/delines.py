@@ -4,11 +4,9 @@ import os
 
 def stretch_columns(img):
     """
-    Étend les boîtes de délimitation verticalement en utilisant des opérations morphologiques.
-    
+    Étend les boîtes de délimitation verticalement en utilisant des opérations morphologiques. 
     Args:
-        img: Image binaire en entrée
-        
+        img: Image binaire en entrée    
     Returns:
         Image après érosion/dilatation pour étendre les colonnes verticalement
     """
@@ -32,12 +30,10 @@ def stretch_columns(img):
 def segment_columns(img, shape, contours):
     """
     Segmente l'image en colonnes à partir des contours détectés.
-    
     Args:
         img: Image originale
         shape: Dimensions de l'image
-        contours: Liste des contours détectés
-        
+        contours: Liste des contours détectés     
     Returns:
         Liste des contours des blocs de texte détectés
     """
@@ -48,7 +44,7 @@ def segment_columns(img, shape, contours):
     for key in contours:
         for i in contours[key]:
             [x, y, w, h] = i
-            mask = cv2.rectangle(mask, (x, y), (x + w, y + h), (255, 255, 255), -1)
+            mask = cv2.rectangle(mask, (x, y), (x + w, y + h), (255, 0, 0), -1)
     
     # Opérations morphologiques pour affiner les colonnes
     structure = cv2.getStructuringElement(cv2.MORPH_RECT, (4,1))
@@ -62,21 +58,17 @@ def segment_columns(img, shape, contours):
     # Dessin des rectangles sur l'image originale (optionnel)
     for c in cont:
         [x, y, w, h] = cv2.boundingRect(c)
-        img = cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 255), 3) 
+        img = cv2.rectangle(img, (x, y), (x + w, y + h), (255, 0, 0), 3) 
     
     return cont
 
 def ignore_lines(img):
     """
-    Supprime les lignes horizontales et verticales de l'image.
-    
+    Supprime les lignes horizontales et verticales de l'image.   
     Args:
-        img: Image originale en couleur
-        
+        img: Image originale en couleur      
     Returns:
-        contours: Contours des zones de texte détectées
-        hierarchy: Hiérarchie des contours
-        bw: Image binaire après suppression des lignes
+        Image binaire après suppression des lignes
     """
     # Conversion en niveaux de gris et seuillage
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -111,13 +103,7 @@ def ignore_lines(img):
     ret, thresh1 = cv2.threshold(bw, 0, 255, cv2.THRESH_OTSU | cv2.THRESH_BINARY_INV) 
     dilation = cv2.dilate(thresh1, rect_kernel, iterations=1) 
     
-    # Détection des contours
-    contours, hierarchy = cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-    
-    # Étirement des colonnes verticales
-    column_dilation = stretch_columns(dilation)
-    
-    return contours, hierarchy, bw
+    return dilation
 
 if __name__ == "__main__":
     # Configuration
@@ -130,11 +116,11 @@ if __name__ == "__main__":
         exit()
 
     # Étape 1: Suppression des lignes et détection des contours
-    contours, hierarchy, bw = ignore_lines(img)
+    dilation = ignore_lines(img)
     
     # Étape 2: Segmentation des colonnes
-    shape = bw.shape
+    shape = dilation.shape
     img_blocks = img.copy()  # Copie de l'image originale
-    blocks = segment_columns(img_blocks, shape, {'contours': [cv2.boundingRect(c) for c in contours]})
+    blocks = segment_columns(img_blocks, shape, {'contours': [cv2.boundingRect(c) for c in cv2.findContours(dilation, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)[0]]})
     
     print("Traitement terminé avec succès.")
